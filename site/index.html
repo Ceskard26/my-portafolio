@@ -177,26 +177,22 @@ h3{font-family:var(--display);font-weight:700;font-size:1.45rem;line-height:1.2}
 .job li::before{content:"";position:absolute;left:0;top:.72em;width:8px;height:1px;background:var(--accent)}
 .job li strong{color:var(--text-primary);font-weight:600}
 
-/* aterrizar: el momento interactivo */
-.land{background:linear-gradient(180deg,transparent,rgba(14,21,43,.7) 18%,rgba(14,21,43,.7) 82%,transparent)}
-.land .top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,70px);align-items:center}
-.field{position:relative;aspect-ratio:16/10;border-radius:22px;border:1px solid var(--line);background:radial-gradient(ellipse at 50% 0%,rgba(40,62,150,.28),transparent 65%),var(--panel);overflow:hidden;--h:0}
-.dot{position:absolute;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:var(--accent);opacity:calc(.35 + .65*var(--h));transform:translate(calc(var(--dx)*(1 - var(--h))),calc(var(--dy)*(1 - var(--h)))) scale(calc(.55 + .45*var(--h)))}
-.dot.cool{background:#8fb4ff}
-.field .floor{position:absolute;left:8%;right:8%;bottom:12%;height:1px;background:var(--text-primary);transform-origin:left;transform:scaleX(var(--h));opacity:.5}
-.field .state{position:absolute;left:18px;top:16px;color:var(--text-secondary)}
-.hold{position:relative;margin-top:30px;min-height:56px;padding:0 28px;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;background:transparent;border-color:var(--accent);color:var(--text-primary)}
-.hold::before{content:"";position:absolute;inset:0;background:var(--accent);transform-origin:left;transform:scaleX(var(--h,0));opacity:.9}
-.hold span{position:relative}
-.hold.done{color:#1a0c02;border-color:var(--accent)}
-.skills{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:clamp(40px,6vw,72px)}
-.skill{padding:26px 24px;border-radius:18px;background:var(--panel);border:1px solid var(--line);opacity:.62;transform:translateY(10px);transition:opacity .9s var(--ease),transform .9s var(--ease),border-color .9s var(--ease)}
-.skills.lit .skill{opacity:1;transform:none;border-color:var(--accent-muted)}
-.skills.lit .skill:nth-child(2){transition-delay:.12s}.skills.lit .skill:nth-child(3){transition-delay:.24s}.skills.lit .skill:nth-child(4){transition-delay:.36s}
-.skills.settled .skill:nth-child(n){transition-delay:0s}
-.skill .mono{color:var(--accent)}
-.skill h3{margin-top:12px;font-size:1.2rem}
-.skill p{margin-top:12px;color:var(--text-secondary);font-size:.95rem}
+/* stack por capas */
+.stk{background:linear-gradient(180deg,transparent,rgba(14,21,43,.7) 18%,rgba(14,21,43,.7) 82%,transparent)}
+.stk .top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,70px);align-items:end}
+.stk .top .lede{margin-top:0}
+.layers{display:grid;gap:10px;margin-top:clamp(36px,5vw,60px)}
+.layer{position:relative;display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(18px,4vw,56px);align-items:center;padding:26px 30px 26px 34px;border-radius:18px;background:var(--panel);border:1px solid var(--line);overflow:hidden;transition:border-color .5s var(--ease),background-color .5s var(--ease)}
+.layer::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);opacity:var(--lv,1)}
+.layer:hover{border-color:var(--accent-muted);background:var(--panel-2)}
+.layer .mono{color:var(--accent)}
+.layer h3{margin-top:8px;font-size:1.35rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.chips li{padding:7px 13px;border-radius:999px;border:1px solid var(--line-strong);color:var(--text-primary);font-family:var(--mono);font-size:.78rem;opacity:0;transform:translateY(-16px);transition:opacity .6s var(--ease),transform .6s var(--ease);transition-delay:calc(var(--i)*45ms + var(--row)*140ms)}
+.layers.in .chips li{opacity:1;transform:none}
+.layers.settled .chips li{transition-delay:0s}
+.ground{display:flex;align-items:center;gap:14px;margin-top:14px;color:var(--text-secondary)}
+.ground::before,.ground::after{content:"";flex:1;height:1px;background:var(--line-strong)}
 
 /* proyectos */
 .proj .list{margin-top:clamp(36px,5vw,64px);border-top:1px solid var(--line)}
@@ -220,6 +216,9 @@ h3{font-family:var(--display);font-weight:700;font-size:1.45rem;line-height:1.2}
 .card p span{display:block;max-width:58ch}
 .card a.inline{color:var(--text-primary);text-decoration-color:var(--accent);text-underline-offset:4px}
 .card a.inline:hover{color:var(--accent-hover)}
+.card{display:flex;flex-direction:column}
+.join{margin-top:auto;padding-top:28px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 20px}
+.card .join p{margin:0;color:var(--text-primary);font-weight:500}
 
 /* formación */
 .edu .cols{display:grid;grid-template-columns:1.2fr 1.3fr .9fr;gap:clamp(24px,4vw,64px);margin-top:clamp(32px,4vw,56px)}
@@ -249,9 +248,10 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   .num:nth-child(2){border-right:0}
   .num:nth-child(-n+2){border-bottom:1px solid var(--line)}
   .num:nth-child(3){padding-left:0}
-  .xp .wrap,.land .top,.comm .wrap,.edu .cols{grid-template-columns:1fr}
+  .xp .wrap,.stk .top,.comm .wrap,.edu .cols{grid-template-columns:1fr}
+  .stk .top{align-items:start}
   .xp .side{position:static}
-  .skills{grid-template-columns:repeat(2,1fr)}
+  .layer{grid-template-columns:1fr;gap:16px;align-items:start}
   .row{grid-template-columns:60px minmax(0,1fr)}
   .row > div:last-child{grid-column:2}
 }
@@ -260,7 +260,6 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   .nums .grid{grid-template-columns:1fr}
   .num,.num + .num{padding:26px 0;border-right:0;border-bottom:1px solid var(--line)}
   .num:last-child{border-bottom:0}
-  .skills{grid-template-columns:1fr}
   .row{grid-template-columns:1fr}
   .row > div:last-child{grid-column:1}
   .brand span{display:none}
@@ -270,9 +269,8 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   *,*::before,*::after{animation:none!important;transition:none!important;transition-delay:0s!important}
   html{scroll-behavior:auto}
   .rv .r{opacity:1;transform:none}
-  .skill{opacity:1;transform:none}
+  .chips li{opacity:1;transform:none}
   .track .fill{transform:scaleY(1)}
-  .field{--h:1!important}
 }
 </style>
 </head>
@@ -384,26 +382,34 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     </div>
   </section>
 
-  <section class="land" id="aterrizar">
+  <section class="stk" id="stack">
     <div class="wrap">
-      <div class="top">
-        <div class="rv">
-          <p class="label mono r">Cómo trabajo</p>
-          <h2 class="r"><span>Aterrizar es poner orden.</span></h2>
-          <p class="lede r"><span>Al principio todo flota: datos sueltos, servicios sueltos, ideas sueltas. Mi trabajo es que cada pieza caiga en su sitio. Pruébalo tú.</span></p>
-          <button class="btn hold r" id="hold" type="button" aria-describedby="holdState"><span id="holdLabel">Mantén presionado para aterrizar</span></button>
+      <div class="top rv">
+        <div class="r">
+          <p class="label mono">Con qué trabajo</p>
+          <h2><span>Mi stack, capa por capa.</span></h2>
         </div>
-        <div class="field" id="field" aria-hidden="true">
-          <span class="state mono" id="holdState">En el aire</span>
-          <i class="floor"></i>
-        </div>
+        <p class="lede r"><span>De lo que decide a lo que lo sostiene. Estas son las herramientas que uso en cada nivel, de arriba hacia abajo.</span></p>
       </div>
-      <div class="skills" id="skills">
-        <article class="skill"><span class="mono">Capa 04</span><h3>IA y GenAI</h3><p>Orquestación de agentes con watsonx Orchestrate, machine learning con watsonx.ai y LightGBM, RAG, LangChain y búsqueda vectorial.</p></article>
-        <article class="skill"><span class="mono">Capa 03</span><h3>Cloud</h3><p>AWS: EKS, ECS, EC2, RDS Aurora, S3 y CloudFront. IBM Cloud: OpenShift, Kubernetes Service y VPC.</p></article>
-        <article class="skill"><span class="mono">Capa 02</span><h3>DevOps</h3><p>Terraform, Docker, Kubernetes, CI/CD con GitHub Actions y AWS CodeDeploy, Linux y Git.</p></article>
-        <article class="skill"><span class="mono">Capa 01</span><h3>Código y datos</h3><p>Python, SQL, Bash, FastAPI y PostgreSQL.</p></article>
+      <div class="layers" id="layers">
+        <article class="layer" style="--row:0;--lv:1">
+          <div><span class="mono">Lo que decide</span><h3>IA y GenAI</h3></div>
+          <ul class="chips"><li>watsonx Orchestrate</li><li>watsonx.ai</li><li>Agentes de IA</li><li>RAG</li><li>LangChain</li><li>LightGBM</li><li>Búsqueda vectorial</li></ul>
+        </article>
+        <article class="layer" style="--row:1;--lv:.75">
+          <div><span class="mono">De qué está hecho</span><h3>Código y datos</h3></div>
+          <ul class="chips"><li>Python</li><li>SQL</li><li>Bash</li><li>FastAPI</li><li>PostgreSQL</li></ul>
+        </article>
+        <article class="layer" style="--row:2;--lv:.5">
+          <div><span class="mono">Cómo llega</span><h3>DevOps</h3></div>
+          <ul class="chips"><li>Terraform</li><li>Docker</li><li>Kubernetes</li><li>GitHub Actions</li><li>AWS CodeDeploy</li><li>Linux</li><li>Git</li></ul>
+        </article>
+        <article class="layer" style="--row:3;--lv:.3">
+          <div><span class="mono">Donde corre</span><h3>Cloud</h3></div>
+          <ul class="chips"><li>Amazon EKS</li><li>ECS</li><li>EC2</li><li>RDS Aurora</li><li>S3</li><li>CloudFront</li><li>OpenShift</li><li>IBM Kubernetes Service</li><li>VPC</li></ul>
+        </article>
       </div>
+      <p class="ground mono" aria-hidden="true">Tierra · producción</p>
     </div>
   </section>
 
@@ -444,11 +450,14 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
         <h3 class="r">AWS Student Builder Group UNI</h3>
         <p class="r"><span>En 2026 llevé la comunidad al mayor crecimiento y alcance del Perú. Abrí una cohorte de AWS Academy con 457 estudiantes inscritos y organicé 6 eventos con más de 700 asistentes.</span></p>
         <p class="r"><span>También construí y desplegué en AWS la plataforma <a class="inline" href="https://aws-uni.com" target="_blank" rel="noopener">aws-uni.com</a>, con charlas y práctica para los exámenes de certificación.</span></p>
+        <div class="join r"><p>¿Estudias en la UNI o quieres aprender nube? Estás invitado.</p><a class="btn btn-primary" href="https://linktr.ee/AWSCloudClubUNI" target="_blank" rel="noopener">Únete al SBG UNI<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a></div>
       </article>
       <article class="card rv">
         <span class="mono r">Vicepresidente · Lima, Perú</span>
         <h3 class="r">Developer Student Club UNI</h3>
         <p class="r"><span>Colidero los eventos y talleres técnicos del club para estudiantes de ingeniería de la UNI.</span></p>
+        <p class="r"><span>Hacemos eventos de tecnología: datos, IA, cloud, redes, networking y oportunidades laborales.</span></p>
+        <div class="join r"><p>Ven al próximo evento.</p><a class="btn btn-ghost" href="https://devsc.netlify.app/" target="_blank" rel="noopener">Únete al DSC<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a></div>
       </article>
     </div>
   </section>
@@ -678,58 +687,20 @@ function drawTrack(){
 new IntersectionObserver(e=>{trackOn=e[0].isIntersecting;xp.classList.toggle('live',trackOn);drawTrack()}).observe(xp);
 addEventListener('scroll',drawTrack,{passive:true});
 
-/* ---------- mantener para aterrizar ---------- */
-const field=$('#field'),hold=$('#hold'),holdLabel=$('#holdLabel'),holdState=$('#holdState'),skills=$('#skills');
-(function seedDots(){
-  let s=20261011;const rnd=()=>(s=(s*1664525+1013904223)>>>0)/4294967296;
-  const cols=12,rows=4;
-  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
-    const d=document.createElement('i');
-    d.className='dot'+(rnd()<.3?' cool':'');
-    d.style.left=(10+c*(80/(cols-1)))+'%';
-    d.style.top=(34+r*14)+'%';
-    d.style.setProperty('--dx',Math.round((rnd()-.5)*340)+'px');
-    d.style.setProperty('--dy',Math.round((rnd()-.62)*230)+'px');
-    field.appendChild(d);
-  }
-})();
-let h=0,holding=false,done=false,holdRaf=null,holdLast=0;
-function setH(v){
-  h=v;const s=v.toFixed(3);
-  field.style.setProperty('--h',s);hold.style.setProperty('--h',s);
-}
-function finish(){
-  done=true;holding=false;setH(1);
-  hold.classList.add('done');holdLabel.textContent='Aterrizado';holdState.textContent='En tierra · todo en su sitio';
-  skills.classList.add('lit');
-  setTimeout(()=>skills.classList.add('settled'),1600);
-}
-function holdTick(now){
-  const dt=Math.min(60,now-(holdLast||now));holdLast=now;
-  if(holding)setH(Math.min(1,h+dt/1400));
-  else setH(h+(0-h)*(1-Math.pow(1-.1,dt/16.667)));
-  if(holding&&h>=1){holdRaf=null;holdLast=0;finish();return}
-  if(!holding&&h<.002){setH(0);holdRaf=null;holdLast=0;return}
-  holdRaf=requestAnimationFrame(holdTick);
-}
-function startHold(){
-  if(done)return;
-  if(RM.matches){finish();return}
-  holding=true;if(holdRaf===null)holdRaf=requestAnimationFrame(holdTick);
-}
-function endHold(){holding=false}
-hold.addEventListener('pointerdown',e=>{e.preventDefault();hold.focus();startHold()});
-['pointerup','pointerleave','pointercancel','blur'].forEach(ev=>hold.addEventListener(ev,endHold));
-hold.addEventListener('contextmenu',e=>e.preventDefault());
-hold.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();startHold()}});
-hold.addEventListener('keyup',e=>{if(e.key===' '||e.key==='Enter')endHold()});
+/* las herramientas caen en su capa al entrar en pantalla */
+const layers=$('#layers');
+layers.querySelectorAll('.chips').forEach(ul=>[...ul.children].forEach((li,i)=>li.style.setProperty('--i',i)));
+new IntersectionObserver((e,o)=>{
+  if(!e[0].isIntersecting)return;
+  layers.classList.add('in');o.disconnect();
+  setTimeout(()=>layers.classList.add('settled'),1800);
+},{threshold:.25}).observe(layers);
 
 /* movimiento reducido, en vivo y en ambos sentidos */
 RM.addEventListener('change',e=>{
-  if(e.matches){track.style.setProperty('--p',1);skills.classList.add('lit','settled')}
+  if(e.matches){track.style.setProperty('--p',1);layers.classList.add('in','settled')}
   else{lastP=-1;drawTrack();applyHeroMode()}
 });
-if(RM.matches)skills.classList.add('lit','settled');
 
 document.addEventListener('visibilitychange',()=>document.body.classList.toggle('paused',document.hidden));
 })();
